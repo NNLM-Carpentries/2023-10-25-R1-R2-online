@@ -29,12 +29,6 @@ double quotation marks around the value, unless specified otherwise.
 And run 'make workshop-check' *before* committing to make sure that changes are good.
 {% endcomment %}
 
-
-{% comment %}
-8< ============================= until here ==================
-{% endcomment %}
-
-
 {% comment %}
 Check DC curriculum
 {% endcomment %}
@@ -59,6 +53,26 @@ It looks like you are setting up a website for a Software Carpentry curriculum b
 {% endunless %}
 {% endif %}
 
+{% comment %}
+EVENTBRITE
+
+This block includes the Eventbrite registration widget if
+'eventbrite' has been set in the header.  You can delete it if you
+are not using Eventbrite, or leave it in, since it will not be
+displayed if the 'eventbrite' field in the header is not set.
+{% endcomment %}
+{% if page.eventbrite %}
+<strong>Some adblockers block the registration window. If you do not see the
+  registration box below, please check your adblocker settings.</strong>
+<iframe
+  src="https://www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt"
+  frameborder="0"
+  width="100%"
+  height="280px"
+  scrolling="auto">
+</iframe>
+{% endif %}
+
 
 <h2 id="general">General Information</h2>
 
@@ -68,8 +82,16 @@ INTRODUCTION
 Edit the general explanatory paragraph below if you want to change
 the pitch.
 {% endcomment %}
+{% if site.carpentry == "swc" %}
+{% include swc/intro.html %}
 {% elsif site.carpentry == "dc" %}
 {% include dc/intro.html %}
+{% elsif site.carpentry == "lc" %}
+{% include lc/intro.html %}
+{% endif %}
+
+{% if site.pilot %}
+This is a pilot workshop, testing out a lesson that is still under development. The lesson authors would appreciate any feedback you can give them about the lesson content and suggestions for how it could be further improved.
 {% endif %}
 
 {% comment %}
@@ -329,8 +351,16 @@ of code below the Schedule `<h2>` header below with
 
 <h2 id="schedule">Schedule</h2>
 
+{% if site.carpentry == "swc" %}
+{% include swc/schedule.html %}
 {% elsif site.carpentry == "dc" %}
 {% include dc/schedule.html %}
+{% elsif site.carpentry == "lc" %}
+{% include lc/schedule.html %}
+{% elsif site.carpentry == "incubator" %}
+This workshop is teaching a lesson in [The Carpentries Incubator](https://carpentries-incubator.org/).
+Please check [the lesson homepage]({{ site.incubator_lesson_site }}) for a list of lesson sections and estimated timings.
+{% endif %}
 
 {% comment %}
 Edit/replace the text above if you want to include a schedule table.
@@ -338,6 +368,9 @@ See the contents of the _includes/custom-schedule.html file for an example of
 how one of these schedule tables is constructed.
 {% endcomment %}
 
+{% if site.pilot %}
+The lesson taught in this workshop is being piloted and a precise schedule is yet to be established. The workshop will include regular breaks. Please [contact the workshop organisers](#contact) if you would like more information about the planned schedule.
+{% endif %}
 
 <hr/>
 
@@ -358,8 +391,12 @@ please preview your site before committing, and make sure to run
 
 <p>
   To participate in a
+  {% if site.carpentry == "swc" %}
+  Software Carpentry
   {% elsif site.carpentry == "dc" %}
   Data Carpentry
+  {% elsif site.carpentry == "lc" %}
+  Library Carpentry
   {% endif %}
   workshop,
   you will need access to software as described below.
@@ -390,8 +427,13 @@ These are the installation instructions for the tools used
 during the workshop.
 {% endcomment %}
 
+{% if site.carpentry == "swc" %}
+{% include swc/setup.html %}
 {% elsif site.carpentry == "dc" %}
 {% include dc/setup.html %}
+{% elsif site.carpentry == "lc" %}
+{% include lc/setup.html %}
+{% elsif site.carpentry == "incubator" %}
 Please check the "Setup" page of
 [the lesson site]({{ site.incubator_lesson_site }}) for instructions to follow
 to obtain the software and data you will need to follow the lesson.
